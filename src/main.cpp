@@ -1,13 +1,12 @@
 #include <Adafruit_SSD1306.h>
 #include <Arduino.h>
-#include <string>
 #include <pins.h>
 
 #define SCREEN_ADDRESS 0x3C
 
 Adafruit_SSD1306 display(128, 32);
 
-std::string moves[3] = {"Rock", "Paper", "Scissors"};
+String moves[3] = {"Rock", "Paper", "Scissors"};
 
 void setup() {
     pinMode(ROCK1, INPUT);
@@ -32,25 +31,23 @@ void loop() {
     uint8_t player2Move = 0;
 
     if (digitalRead(ROCK1) == HIGH)
-        player1Move = 1
+        player1Move = 1;
     else if (digitalRead(PAPER1) == HIGH)
-        player1Move = 2
+        player1Move = 2;
     else if (digitalRead(SCISSOR1) == HIGH)
-        player1Move = 3
-    else player1Move = 0
+        player1Move = 3;
 
     if (digitalRead(ROCK2) == HIGH)
-        player2Move = 1
+        player2Move = 1;
     else if (digitalRead(PAPER2) == HIGH)
-        player2Move = 2
+        player2Move = 2;
     else if (digitalRead(SCISSOR2) == HIGH)
-        player2Move = 3
-    else player2Move = 0
+        player2Move = 3;
 
     display.setCursor(10, 16);
     if (player1Move != 0 && player1Move < 4)
     {
-        display.println(moves[player1Move]);
+        display.println(moves[player1Move - 1]);
         display.display();
 
         delay(500);
