@@ -4,7 +4,7 @@
 
 #define SCREEN_ADDRESS 0x3C
 
-Adafruit_SSD1306 display(128, 32);
+Adafruit_SSD1306 display(128, 64);
 
 String moves[3] = {"Rock", "Paper", "Scissors"};
 
@@ -16,6 +16,8 @@ void setup() {
     pinMode(PAPER2, INPUT);
     pinMode(SCISSOR2, INPUT);
 
+    Serial.begin(9600);
+
     display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS);
     display.display();
     delay(2000);
@@ -26,9 +28,10 @@ void setup() {
     display.display();
 }
 
+uint8_t player1Move = 0;
+uint8_t player2Move = 0;
+
 void loop() {
-    uint8_t player1Move = 0;
-    uint8_t player2Move = 0;
 
     if (digitalRead(ROCK1) == HIGH)
         player1Move = 1;
@@ -44,9 +47,15 @@ void loop() {
     else if (digitalRead(SCISSOR2) == HIGH)
         player2Move = 3;
 
-    display.setCursor(10, 16);
+    Serial.println("Player Move 1: " + String(player1Move));
+    Serial.println("Player Move 2: " + String(player2Move));
+
     if (player1Move != 0 && player1Move < 4)
     {
+        display.setCursor(10, 16);
+        display.println("Player 1:");
+
+        display.setCursor(10, 40);
         display.println(moves[player1Move - 1]);
         display.display();
 
@@ -59,10 +68,27 @@ void loop() {
         delay(2000);
         display.stopscroll();
         delay(500);
-    } else
-    {
-        display.clearDisplay();
+    } else if (player2Move != 0 && player2Move < 4) {
+        display.setCursor(10, 16);
+        display.println("Player 2:");
+
+        display.setCursor(10, 40);
+        display.println(moves[player2Move - 1]);
         display.display();
+
+        delay(500);
+        display.startscrollright(0x00, 0x0F);
+        delay(2000);
+        display.stopscroll();
+        delay(500);
+        display.startscrollleft(0x00, 0x0F);
+        delay(2000);
+        display.stopscroll();
+        delay(500);
     }
-    delay(200);
+    player2Move = 0;
+    player1Move = 0;
+
+    display.clearDisplay();
+    display.display();
 }
