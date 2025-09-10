@@ -60,12 +60,12 @@ void loop() {
         display.display();
 
         delay(500);
-        display.startscrollright(0x00, 0x0F);
-        delay(2000);
+        display.startscrollright(0x00, 0x20);
+        delay(2200);
         display.stopscroll();
         delay(500);
-        display.startscrollleft(0x00, 0x0F);
-        delay(2000);
+        display.startscrollleft(0x00, 0x20);
+        delay(2200);
         display.stopscroll();
         delay(500);
     } else if (player2Move != 0 && player2Move < 4) {
@@ -77,12 +77,12 @@ void loop() {
         display.display();
 
         delay(500);
-        display.startscrollright(0x00, 0x0F);
-        delay(2000);
+        display.startscrollright(0x00, 0x20);
+        delay(2200);
         display.stopscroll();
         delay(500);
-        display.startscrollleft(0x00, 0x0F);
-        delay(2000);
+        display.startscrollleft(0x00, 0x20);
+        delay(2200);
         display.stopscroll();
         delay(500);
     }
