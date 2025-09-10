@@ -28,24 +28,42 @@ void setup() {
     display.display();
 }
 
-uint8_t player1Move = 0;
-uint8_t player2Move = 0;
+void scrollScreen() {
+    delay(500);
+    display.startscrollright(0x00, 0x20);
+    delay(2200);
+    display.stopscroll();
+    delay(500);
+    display.startscrollleft(0x00, 0x20);
+    delay(2200);
+    display.stopscroll();
+    delay(500);
+}
+
+uint8_t getPlayer1Move() {
+    if (digitalRead(ROCK1) == HIGH)
+        return 1;
+    if (digitalRead(PAPER1) == HIGH)
+        return 2;
+    if (digitalRead(SCISSOR1) == HIGH)
+        return 3;
+
+    return 0;
+}
+uint8_t getPlayer2Move() {
+    if (digitalRead(ROCK2) == HIGH)
+        return 1;
+    if (digitalRead(PAPER2) == HIGH)
+        return 2;
+    if (digitalRead(SCISSOR2) == HIGH)
+        return 3;
+
+    return 0;
+}
 
 void loop() {
-
-    if (digitalRead(ROCK1) == HIGH)
-        player1Move = 1;
-    else if (digitalRead(PAPER1) == HIGH)
-        player1Move = 2;
-    else if (digitalRead(SCISSOR1) == HIGH)
-        player1Move = 3;
-
-    if (digitalRead(ROCK2) == HIGH)
-        player2Move = 1;
-    else if (digitalRead(PAPER2) == HIGH)
-        player2Move = 2;
-    else if (digitalRead(SCISSOR2) == HIGH)
-        player2Move = 3;
+    uint8_t player1Move = getPlayer1Move();
+    uint8_t player2Move = getPlayer2Move();
 
     Serial.println("Player Move 1: " + String(player1Move));
     Serial.println("Player Move 2: " + String(player2Move));
@@ -59,15 +77,7 @@ void loop() {
         display.println(moves[player1Move - 1]);
         display.display();
 
-        delay(500);
-        display.startscrollright(0x00, 0x20);
-        delay(2200);
-        display.stopscroll();
-        delay(500);
-        display.startscrollleft(0x00, 0x20);
-        delay(2200);
-        display.stopscroll();
-        delay(500);
+        scrollScreen();
     } else if (player2Move != 0 && player2Move < 4) {
         display.setCursor(10, 16);
         display.println("Player 2:");
@@ -76,15 +86,7 @@ void loop() {
         display.println(moves[player2Move - 1]);
         display.display();
 
-        delay(500);
-        display.startscrollright(0x00, 0x20);
-        delay(2200);
-        display.stopscroll();
-        delay(500);
-        display.startscrollleft(0x00, 0x20);
-        delay(2200);
-        display.stopscroll();
-        delay(500);
+        scrollScreen();
     }
     player2Move = 0;
     player1Move = 0;
