@@ -42,39 +42,20 @@ void scrollScreen() {
 
 uint8_t getPlayerMove(bool player) {
     if (!player) {
-        if (digitalRead(ROCK1) == HIGH)
+        if (digitalRead(ROCK1) != HIGH)
             return 1;
-        if (digitalRead(PAPER1) == HIGH)
+        if (digitalRead(PAPER1) != HIGH)
             return 2;
-        if (digitalRead(SCISSOR1) == HIGH)
+        if (digitalRead(SCISSOR1) != HIGH)
             return 3;
     } else {
-        if (digitalRead(ROCK2) == HIGH)
+        if (digitalRead(ROCK2) != HIGH)
             return 1;
-        if (digitalRead(PAPER2) == HIGH)
+        if (digitalRead(PAPER2) != HIGH)
             return 2;
-        if (digitalRead(SCISSOR2) == HIGH)
+        if (digitalRead(SCISSOR2) != HIGH)
             return 3;
     }
-uint8_t getPlayer1Move() {
-    if (digitalRead(ROCK1) != HIGH)
-        return 1;
-    if (digitalRead(PAPER1) != HIGH)
-        return 2;
-    if (digitalRead(SCISSOR1) != HIGH)
-        return 3;
-
-    return 0;
-}
-uint8_t getPlayer2Move() {
-    if (digitalRead(ROCK2) != HIGH)
-        return 1;
-    if (digitalRead(PAPER2) != HIGH)
-        return 2;
-    if (digitalRead(SCISSOR2) != HIGH)
-        return 3;
-
-    return 0;
 }
 
 void loop() {
