@@ -9,12 +9,12 @@ Adafruit_SSD1306 display(128, 64);
 String moves[3] = {"Rock", "Paper", "Scissors"};
 
 void setup() {
-    pinMode(ROCK1, INPUT);
-    pinMode(PAPER1, INPUT);
-    pinMode(SCISSOR1, INPUT);
-    pinMode(ROCK2, INPUT);
-    pinMode(PAPER2, INPUT);
-    pinMode(SCISSOR2, INPUT);
+    pinMode(ROCK1, INPUT_PULLUP);
+    pinMode(PAPER1, INPUT_PULLUP);
+    pinMode(SCISSOR1, INPUT_PULLUP);
+    pinMode(ROCK2, INPUT_PULLUP);
+    pinMode(PAPER2, INPUT_PULLUP);
+    pinMode(SCISSOR2, INPUT_PULLUP);
 
     Serial.begin(9600);
 
@@ -41,21 +41,21 @@ void scrollScreen() {
 }
 
 uint8_t getPlayer1Move() {
-    if (digitalRead(ROCK1) == HIGH)
+    if (digitalRead(ROCK1) != HIGH)
         return 1;
-    if (digitalRead(PAPER1) == HIGH)
+    if (digitalRead(PAPER1) != HIGH)
         return 2;
-    if (digitalRead(SCISSOR1) == HIGH)
+    if (digitalRead(SCISSOR1) != HIGH)
         return 3;
 
     return 0;
 }
 uint8_t getPlayer2Move() {
-    if (digitalRead(ROCK2) == HIGH)
+    if (digitalRead(ROCK2) != HIGH)
         return 1;
-    if (digitalRead(PAPER2) == HIGH)
+    if (digitalRead(PAPER2) != HIGH)
         return 2;
-    if (digitalRead(SCISSOR2) == HIGH)
+    if (digitalRead(SCISSOR2) != HIGH)
         return 3;
 
     return 0;
