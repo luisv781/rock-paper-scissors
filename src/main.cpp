@@ -16,8 +16,6 @@ void setup() {
     pinMode(PAPER2, INPUT_PULLUP);
     pinMode(SCISSOR2, INPUT_PULLUP);
 
-    Serial.begin(9600);
-
     display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS);
     display.display();
     delay(2000);
@@ -34,28 +32,17 @@ void scrollScreen() {
     delay(2200);
     display.stopscroll();
     delay(500);
-    display.startscrollleft(0x00, 0x20);
-    delay(2200);
-    display.stopscroll();
-    delay(500);
 }
 
-uint8_t getPlayerMove(bool player) {
-    if (!player) {
-        if (digitalRead(ROCK1) != HIGH)
-            return 1;
-        if (digitalRead(PAPER1) != HIGH)
-            return 2;
-        if (digitalRead(SCISSOR1) != HIGH)
-            return 3;
-    } else {
-        if (digitalRead(ROCK2) != HIGH)
-            return 1;
-        if (digitalRead(PAPER2) != HIGH)
-            return 2;
-        if (digitalRead(SCISSOR2) != HIGH)
-            return 3;
+uint8_t getPlayerMove(const bool player) {
+    for (int move = 0; move < 3; move++) {
+        constexpr uint8_t player1Moves[] = {ROCK1, PAPER1, SCISSOR1};
+        constexpr uint8_t player2Moves[] = {ROCK2, PAPER2, SCISSOR2};
+        if (digitalRead((!player) ? player1Moves[move] : player2Moves[move]) != HIGH)
+            return move + 1;
     }
+
+    return 0;
 }
 
 void loop() {
@@ -82,8 +69,6 @@ void loop() {
 
         scrollScreen();
     }
-    player2Move = 0;
-    player1Move = 0;
 
     display.clearDisplay();
     display.display();
