@@ -40,6 +40,22 @@ void scrollScreen() {
     delay(500);
 }
 
+uint8_t getPlayerMove(bool player) {
+    if (!player) {
+        if (digitalRead(ROCK1) == HIGH)
+            return 1;
+        if (digitalRead(PAPER1) == HIGH)
+            return 2;
+        if (digitalRead(SCISSOR1) == HIGH)
+            return 3;
+    } else {
+        if (digitalRead(ROCK2) == HIGH)
+            return 1;
+        if (digitalRead(PAPER2) == HIGH)
+            return 2;
+        if (digitalRead(SCISSOR2) == HIGH)
+            return 3;
+    }
 uint8_t getPlayer1Move() {
     if (digitalRead(ROCK1) != HIGH)
         return 1;
@@ -62,11 +78,8 @@ uint8_t getPlayer2Move() {
 }
 
 void loop() {
-    uint8_t player1Move = getPlayer1Move();
-    uint8_t player2Move = getPlayer2Move();
-
-    Serial.println("Player Move 1: " + String(player1Move));
-    Serial.println("Player Move 2: " + String(player2Move));
+    uint8_t player1Move = getPlayerMove(false);
+    uint8_t player2Move = getPlayerMove(true);
 
     if (player1Move != 0 && player1Move < 4)
     {
