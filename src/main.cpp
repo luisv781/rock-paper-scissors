@@ -112,7 +112,7 @@ void intro() {
     display.display();
 }
 
-uint8_t getPlayerMove(const bool player) {
+uint8_t getPlayerChosenMove(const bool player) {
     for (int move = 0; move < 3; move++) {
         constexpr uint8_t player1Moves[] = {ROCK1, PAPER1, SCISSOR1};
         constexpr uint8_t player2Moves[] = {ROCK2, PAPER2, SCISSOR2};
@@ -123,26 +123,23 @@ uint8_t getPlayerMove(const bool player) {
     return 0;
 }
 
-void playerMove() {
-    uint8_t player1Move = getPlayerMove(false);
-    uint8_t player2Move = getPlayerMove(true);
+void playerMove(const bool player) {
+    while (!getPlayerChosenMove(player)) {
+        delay(20);
+    }
 
-    if (player1Move != 0 && player1Move < 4)
+    uint8_t playerChosenMove = getPlayerChosenMove(player);
+
+    if (playerChosenMove != 0)
     {
-        display.setCursor(10, 16);
-        display.println("Player 1:");
-
-        display.setCursor(10, 40);
-        display.println(moves[player1Move - 1]);
+        display.clearDisplay();
         display.display();
 
-        scrollScreen();
-    } else if (player2Move != 0 && player2Move < 4) {
         display.setCursor(10, 16);
-        display.println("Player 2:");
+        display.println(!player ? "Player 1:" : "Player 2:");
 
         display.setCursor(10, 40);
-        display.println(moves[player2Move - 1]);
+        display.println(moves[playerChosenMove - 1]);
         display.display();
 
         scrollScreen();
@@ -155,7 +152,16 @@ void playerMove() {
 void loop() {
     intro();
     delay(500);
+
+    bool player = false;
     while (true) {
-        playerMove();
+        display.setCursor(0, 16);
+        display.println(!player ? "Player 1's" : "Player 2's");
+        display.setCursor(30, 40);
+        display.println("Turn");
+        display.display();
+
+        playerMove(player);
+        player = !player;
     }
 }
