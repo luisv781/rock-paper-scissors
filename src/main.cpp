@@ -8,6 +8,7 @@ Adafruit_SSD1306 display(128, 64);
 
 String moves[3] = {"Paper", "Rock", "Scissors"};
 
+int8_t points = 0;
 
 void scrollScreen() {
     delay(500);
@@ -145,18 +146,38 @@ void setup() {
 
     display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS);
     display.display();
-    delay(2000);
+    delay(1000);
 
     display.setTextSize(2);
     display.setTextColor(WHITE);
     display.clearDisplay();
-    display.display();
 
     intro();
     delay(500);
 }
 
 void loop() {
+    if (points == 3 || points == -3) {
+        if (points == 3) {
+            display.setCursor(0, 16);
+            display.println("Player 1");
+            display.setCursor(30, 40);
+            display.println("Wins");
+            points = 0;
+        } else if (points == -3) {
+            display.setCursor(0, 16);
+            display.println("Player 2");
+            display.setCursor(30, 40);
+            display.println("Wins");
+            points = 0;
+        }
+        display.display();
+        delay(3000);
+
+        intro();
+        delay(500);
+    }
+
     uint8_t player1Move = 0;
     uint8_t player2Move = 0;
 
@@ -179,29 +200,32 @@ void loop() {
 
 
     display.setCursor(0, 16);
-    switch (player2Move - player1Move)
-    {
-    case 1:
-    case -2:
-        display.setCursor(0, 16);
-        display.println("Player 1");
-        display.setCursor(30, 40);
-        display.println("Wins");
-        break;
+    switch (player2Move - player1Move) {
+        case 1:
+        case -2:
+            display.setCursor(0, 16);
+            display.println("Player 1");
+            display.setCursor(30, 40);
+            display.println("+1");
+            points++;
+            break;
 
-    case -1:
-    case 2:
-        display.setCursor(0, 16);
-        display.println("Player 2");
-        display.setCursor(30, 40);
-        display.println("Wins");
-        break;
-    
-    default:
-        display.setCursor(32, 28);
-        display.println("Tie");
-        break;
+        case -1:
+        case 2:
+            display.setCursor(0, 16);
+            display.println("Player 2");
+            display.setCursor(30, 40);
+            display.println("+1");
+            points--;
+            break;
+        
+        default:
+            display.setCursor(32, 28);
+            display.println("Tie");
+            break;
     }
     display.display();
     delay(3000);
+
+    display.clearDisplay();
 }
