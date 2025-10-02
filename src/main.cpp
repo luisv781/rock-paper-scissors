@@ -18,11 +18,15 @@ void scrollScreen() {
     delay(500);
 }
 
-bool pressAnyButton() {
-    for (int i = 0; i < 6; i++) {
-        constexpr uint8_t buttons[] = {ROCK1, PAPER1, SCISSOR1, ROCK2, PAPER2, SCISSOR2};
-        if (digitalRead(buttons[i]) != HIGH)
-            return true;
+bool pressAnyButton(const unsigned long ms = 20) {
+    const unsigned long start = millis();
+    while (millis() - start < ms) {
+        for (int i = 0; i < 6; i++) {
+            constexpr uint8_t buttons[] = {ROCK1, PAPER1, SCISSOR1, ROCK2, PAPER2, SCISSOR2};
+            if (digitalRead(buttons[i]) != HIGH)
+                return true;
+        }
+        delay(20);
     }
     return false;
 }
@@ -32,50 +36,48 @@ void intro() {
     display.setCursor(15, 16);
     display.println("Rock");
     display.display();
-    delay(1000);
+    if (pressAnyButton(1000)) return;
     display.setCursor(15, 32);
     display.println("Paper");
     display.display();
-    delay(1000);
+    if (pressAnyButton(1000)) return;
     display.setCursor(15, 48);
     display.println("Scissors");
     display.display();
-    delay(1000);
+    if (pressAnyButton(1000)) return;
 
-    while (!pressAnyButton()) {
+    while (true) {
         for (int i = 0; i < 5; ++i) {
             display.fillRect(0, 0, 128, 30, BLACK);
             display.display();
-            delay(200);
+            if (pressAnyButton(200)) return;
 
             display.fillRect(0, 0, 128, 46, BLACK);
             display.display();
-            delay(200);
+            if (pressAnyButton(200)) return;
 
             display.fillRect(0, 0, 128, 64, BLACK);
             display.setCursor(15, 16);
             display.println("Rock");
             display.display();
-            delay(200);
+            if (pressAnyButton(200)) return;
 
             display.setCursor(15, 32);
             display.println("Paper");
             display.display();
-            delay(200);
+            if (pressAnyButton(200)) return;
 
             display.setCursor(15, 48);
             display.println("Scissors");
             display.display();
-            delay(200);
-
-            if (pressAnyButton()) break;
+            if (pressAnyButton(200)) return;
         }
 
         display.clearDisplay();
         display.display();
-        delay(200);
+        if (pressAnyButton(200)) return;
 
-        for (int i = 0; i < 3; ++i) {
+        for (int i = 0; i < 5; ++i) {
             display.setCursor(35, 16);
             display.println("Press");
             display.setCursor(50, 32);
@@ -83,18 +85,13 @@ void intro() {
             display.setCursor(30, 48);
             display.println("Button");
             display.display();
-            delay(200);
+            if (pressAnyButton(200)) return;
 
             display.clearDisplay();
             display.display();
-            delay(200);
-
-            if (pressAnyButton()) break;
+            if (pressAnyButton(200)) return;
         }
     }
-
-    display.clearDisplay();
-    display.display();
 }
 
 uint8_t getPlayerChosenMove(const bool player) {
@@ -113,7 +110,7 @@ uint8_t playerMove(const bool player) {
         delay(20);
     }
 
-    uint8_t playerChosenMove = getPlayerChosenMove(player);
+    const uint8_t playerChosenMove = getPlayerChosenMove(player);
 
     if (playerChosenMove)
         return playerChosenMove;
@@ -139,6 +136,8 @@ void setup() {
     display.setTextColor(WHITE);
 
     intro();
+    display.clearDisplay();
+    display.display();
     delay(1000);
 }
 
@@ -161,6 +160,8 @@ void loop() {
         delay(3000);
 
         intro();
+        display.clearDisplay();
+        display.display();
         delay(500);
     }
 
