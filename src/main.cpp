@@ -28,15 +28,16 @@ bool pressAnyButton() {
 }
 
 void intro() {
-    display.setCursor(5, 16);
+    display.clearDisplay();
+    display.setCursor(15, 16);
     display.println("Rock");
     display.display();
     delay(1000);
-    display.setCursor(5, 32);
+    display.setCursor(15, 32);
     display.println("Paper");
     display.display();
     delay(1000);
-    display.setCursor(5, 48);
+    display.setCursor(15, 48);
     display.println("Scissors");
     display.display();
     delay(1000);
@@ -52,17 +53,17 @@ void intro() {
             delay(200);
 
             display.fillRect(0, 0, 128, 64, BLACK);
-            display.setCursor(5, 16);
+            display.setCursor(15, 16);
             display.println("Rock");
             display.display();
             delay(200);
 
-            display.setCursor(5, 32);
+            display.setCursor(15, 32);
             display.println("Paper");
             display.display();
             delay(200);
 
-            display.setCursor(5, 48);
+            display.setCursor(15, 48);
             display.println("Scissors");
             display.display();
             delay(200);
@@ -75,11 +76,11 @@ void intro() {
         delay(200);
 
         for (int i = 0; i < 3; ++i) {
-            display.setCursor(5, 16);
+            display.setCursor(35, 16);
             display.println("Press");
-            display.setCursor(5, 32);
+            display.setCursor(50, 32);
             display.println("Any");
-            display.setCursor(5, 48);
+            display.setCursor(30, 48);
             display.println("Button");
             display.display();
             delay(200);
@@ -115,20 +116,7 @@ uint8_t playerMove(const bool player) {
     uint8_t playerChosenMove = getPlayerChosenMove(player);
 
     if (playerChosenMove)
-    {
-        // display.clearDisplay();
-        // display.display();
-
-        // display.setCursor(10, 16);
-        // display.println(!player ? "Player 1:" : "Player 2:");
-
-        // display.setCursor(10, 40);
-        // display.println(moves[playerChosenMove - 1]);
-        // display.display();
-
-        // scrollScreen();
         return playerChosenMove;
-    }
 
     display.clearDisplay();
     display.display();
@@ -146,28 +134,26 @@ void setup() {
 
     display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS);
     display.display();
-    delay(1000);
 
     display.setTextSize(2);
     display.setTextColor(WHITE);
-    display.clearDisplay();
 
     intro();
-    delay(500);
+    delay(1000);
 }
 
 void loop() {
     if (points == 3 || points == -3) {
         if (points == 3) {
-            display.setCursor(0, 16);
+            display.setCursor(15, 16);
             display.println("Player 1");
-            display.setCursor(30, 40);
+            display.setCursor(40, 40);
             display.println("Wins");
             points = 0;
         } else if (points == -3) {
-            display.setCursor(0, 16);
+            display.setCursor(15, 16);
             display.println("Player 2");
-            display.setCursor(30, 40);
+            display.setCursor(40, 40);
             display.println("Wins");
             points = 0;
         }
@@ -182,45 +168,44 @@ void loop() {
     uint8_t player2Move = 0;
 
     display.clearDisplay();
-    display.setCursor(0, 16);
+    display.setCursor(5, 16);
     display.println("Player 1's");
-    display.setCursor(30, 40);
+    display.setCursor(40, 40);
     display.println("Turn");
     display.display();
-
     player1Move = playerMove(false);
 
-    display.setCursor(0, 16);
+    display.clearDisplay();
+    display.setCursor(5, 16);
     display.println("Player 2's");
-    display.setCursor(30, 40);
+    display.setCursor(40, 40);
     display.println("Turn");
     display.display();
+    player2Move = playerMove(true);
 
-    player2Move = playerMove(false);
-
-
+    display.clearDisplay();
     display.setCursor(0, 16);
     switch (player2Move - player1Move) {
         case 1:
         case -2:
-            display.setCursor(0, 16);
+            display.setCursor(15, 16);
             display.println("Player 1");
-            display.setCursor(30, 40);
+            display.setCursor(50, 40);
             display.println("+1");
             points++;
             break;
 
         case -1:
         case 2:
-            display.setCursor(0, 16);
+            display.setCursor(15, 16);
             display.println("Player 2");
-            display.setCursor(30, 40);
+            display.setCursor(50, 40);
             display.println("+1");
             points--;
             break;
         
         default:
-            display.setCursor(32, 28);
+            display.setCursor(45, 28);
             display.println("Tie");
             break;
     }
